@@ -1,18 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchContacts = createAsyncThunk('contacts/fetchContacts', async () => {
-  const response = await axios.get('https://64b7a51421b9aa6eb078b52a.mockapi.io/contacts/contacts');
-  return response.data;
+const API_BASE_URL = 'https://connections-api.herokuapp.com/';
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
 });
 
-export const addContact = createAsyncThunk('contacts/addContact', async (contact) => {
-  const response = await axios.post('https://64b7a51421b9aa6eb078b52a.mockapi.io/contacts/contacts', contact);
+export const createContact = createAsyncThunk('contacts/createContact', async (contactData) => {
+  const response = await axiosInstance.post('/contacts', contactData);
   return response.data;
 });
 
 export const deleteContact = createAsyncThunk('contacts/deleteContact', async (contactId) => {
-  await axios.delete(`https://64b7a51421b9aa6eb078b52a.mockapi.io/contacts/contacts/${contactId}`);
+  await axiosInstance.delete(`/contacts/${contactId}`);
   return contactId;
 });
 
@@ -26,18 +27,7 @@ const contactsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContacts.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.contacts = action.payload;
-      })
-      .addCase(fetchContacts.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(createContact.fulfilled, (state, action) => {
         state.contacts.push(action.payload);
       })
       .addCase(deleteContact.fulfilled, (state, action) => {

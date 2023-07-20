@@ -1,34 +1,61 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addContact, fetchContacts } from './store/contactsSlice';
+import { createContact, deleteContact } from './store/contactsSlice';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import styles from './App.module.css';
+import { Route, Routes, Link } from 'react-router-dom';
+import UserMenu from './UserMenu/UserMenu';
+import Register from './Register/Register';
+import Login from './Login/Login';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
   const handleAddContact = (newContact) => {
     if (!newContact.name || !newContact.number) {
-      alert('Imię i numer telefonu są wymagane.');
+      alert('Name and number are required.');
       return;
     }
-    dispatch(addContact(newContact));
+    dispatch(createContact(newContact));
+  };
+
+  const handleDeleteContact = (contactId) => {
+    dispatch(deleteContact(contactId));
   };
 
   return (
     <div>
-      <h1 className={styles.heading}>Phonebook</h1>
-      <ContactForm addContact={handleAddContact} />
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/contacts">Contacts</Link>
+          </li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/contacts">
+          <h1 className={styles.heading}>Phonebook</h1>
+          <ContactForm addContact={handleAddContact} />
 
-      <h2 className={styles.heading}>Contacts</h2>
-      <Filter />
-      <ContactList />
+          <h2 className={styles.heading}>Contacts</h2>
+          <Filter />
+          <ContactList handleDeleteContact={handleDeleteContact} />
+        </Route>
+        <Route path="/">
+          <UserMenu />
+        </Route>
+      </Routes>
     </div>
   );
 };

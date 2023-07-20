@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { fetchContacts } from './components/redux/store';
+import { fetchContacts } from './components/contactsAPI';
 import store from './components/redux/store';
 
 import App from './components/App';

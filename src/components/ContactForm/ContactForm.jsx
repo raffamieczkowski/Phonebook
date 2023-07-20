@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../store/contactsSlice';
+import { contactsApi } from '../redux/store';
 import { nanoid } from 'nanoid';
 import styles from './ContactForm.module.css';
 import classNames from 'classnames';
@@ -21,7 +21,7 @@ const ContactForm = () => {
       name,
       number,
     };
-    dispatch(addContact(newContact));
+    dispatch(contactsApi.endpoints.addContact.mutation(newContact));
     setName('');
     setNumber('');
   };
