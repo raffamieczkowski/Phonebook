@@ -1,13 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk'; // Dodajemy import thunk
 import contactsReducer from '../store/contactsSlice';
-import { createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { fetchContacts } from '../contactsAPI';
 
 export const contactsApi = createApi({
-  baseQuery: fetchContacts,
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://connections-api.herokuapp.com/api' }),
   endpoints: (builder) => ({
     getContacts: builder.query({
-      query: () => '/contacts',
+      query: () => fetchContacts(),
+    }),
+    deleteContact: builder.mutation({
+      query: (contactId) => ({
+        url: `/contacts/${contactId}`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
@@ -18,7 +25,7 @@ const store = configureStore({
     [contactsApi.reducerPath]: contactsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(contactsApi.middleware),
+    getDefaultMiddleware().concat(thunk, contactsApi.middleware),
 });
 
 export default store;

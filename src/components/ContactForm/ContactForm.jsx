@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { contactsApi } from '../redux/store';
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid/non-secure';
 import styles from './ContactForm.module.css';
-import classNames from 'classnames';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
@@ -27,10 +26,10 @@ const ContactForm = () => {
   };
 
   return (
-    <div className={classNames(styles.container)}>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit}>
-        <div className={classNames(styles.formGroup)}>
-          <label htmlFor="name">Name:</label>
+        <div className={styles.formGroup}>
+          <label htmlFor="name">Imię:</label>
           <input
             type="text"
             id="name"
@@ -40,8 +39,8 @@ const ContactForm = () => {
             required
           />
         </div>
-        <div className={classNames(styles.formGroup)}>
-          <label htmlFor="number">Number:</label>
+        <div className={styles.formGroup}>
+          <label htmlFor="number">Numer:</label>
           <input
             type="tel"
             id="number"
@@ -51,8 +50,8 @@ const ContactForm = () => {
             required
           />
         </div>
-        <button className={classNames(styles.button)} type="submit">
-          Add Contact
+        <button className={styles.button} type="submit">
+          Add contacts
         </button>
       </form>
     </div>

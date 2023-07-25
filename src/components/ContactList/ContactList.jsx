@@ -1,19 +1,23 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './ContactList.module.css';
-import { contactsApi } from '../redux/store';
-
+import { deleteContact } from '../store/contactsSlice';
 const ContactList = () => {
   const contacts = useSelector((state) => state.contacts.contacts);
   const filter = useSelector((state) => state.contacts.filter);
-  const dispatch = useDispatch();
 
   const filteredContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const handleDeleteContact = (contactId) => {
-    dispatch(contactsApi.endpoints.deleteContact.mutation(contactId));
+  const dispatch = useDispatch();
+
+  const handleDeleteContact = async (contactId) => {
+    try {
+      await dispatch(deleteContact(contactId));
+    } catch (error) {
+      console.error('Wystąpił błąd podczas usuwania kontaktu:', error);
+    }
   };
 
   return (
