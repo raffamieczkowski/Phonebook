@@ -16,7 +16,7 @@ const ContactList = () => {
     try {
       await dispatch(deleteContact(contactId));
     } catch (error) {
-      console.error('Wystąpił błąd podczas usuwania kontaktu:', error);
+      console.error('The error occurred while deleting the contact:', error);
     }
   };
 

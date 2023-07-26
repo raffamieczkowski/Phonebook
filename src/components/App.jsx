@@ -9,9 +9,19 @@ import { Route, Routes, Link } from 'react-router-dom';
 import UserMenu from './UserMenu/UserMenu';
 import Register from './Register/Register';
 import Login from './Login/Login';
+import { loginUser } from './redux/authSlice';
 
 const App = () => {
   const dispatch = useDispatch();
+
+  const handleLogin = async (userData) => {
+    try {
+      const response = await dispatch(loginUser(userData));
+      localStorage.setItem('token', response.payload.token);
+    } catch (error) {
+      console.error('Logowanie nie powiodło się:', error);
+    }
+  };
 
   const handleAddContact = (newContact) => {
     if (!newContact.name || !newContact.number) {
@@ -42,7 +52,8 @@ const App = () => {
           <Register />
         </Route>
         <Route path="/login">
-          <Login />
+          {/* Przekaz funkcję handleLogin do komponentu Login */}
+          <Login handleLogin={handleLogin} />
         </Route>
         <Route path="/contacts">
           <h1 className={styles.heading}>Phonebook</h1>
