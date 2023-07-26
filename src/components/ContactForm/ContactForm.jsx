@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { contactsApi } from '../redux/store';
+import { createContact } from '../store/contactsSlice';
 import { nanoid } from 'nanoid/non-secure';
 import styles from './ContactForm.module.css';
 
@@ -15,12 +15,14 @@ const ContactForm = () => {
       alert('Name and number are required.');
       return;
     }
+
     const newContact = {
       id: nanoid(),
       name,
       number,
     };
-    dispatch(contactsApi.endpoints.addContact.mutation(newContact));
+
+    dispatch(createContact(newContact));
     setName('');
     setNumber('');
   };

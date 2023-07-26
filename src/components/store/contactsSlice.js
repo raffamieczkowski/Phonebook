@@ -7,6 +7,11 @@ const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
 });
 
+export const fetchContacts = createAsyncThunk('contacts/fetchContacts', async () => {
+  const response = await axiosInstance.get('/contacts');
+  return response.data;
+});
+
 export const createContact = createAsyncThunk('contacts/createContact', async (contactData) => {
   const response = await axiosInstance.post('/contacts', contactData);
   return response.data;
@@ -27,6 +32,10 @@ const contactsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.contacts = action.payload;
+        state.status = 'idle';
+      })
       .addCase(createContact.fulfilled, (state, action) => {
         state.contacts.push(action.payload);
       })

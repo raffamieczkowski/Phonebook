@@ -7,6 +7,6 @@ export const fetchContacts = async () => {
     const response = await axios.get(`${BASE_URL}/contacts`);
     return response.data;
   } catch (error) {
-    throw new Error('Nie udało się pobrać listy kontaktów.');
+    throw new Error('`Failed to fetch the list of contacts`.');
   }
 };
