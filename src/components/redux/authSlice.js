@@ -1,4 +1,3 @@
-// authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -13,7 +12,6 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (userData) => 
   return response.data;
 });
 
-// Dodajemy akcję do rejestracji użytkownika
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData) => {
   const response = await axiosInstance.post('/users/register', userData);
   return response.data;

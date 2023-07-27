@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createContact } from '../redux/contactsSlice';
 import { nanoid } from 'nanoid/non-secure';
 import styles from './ContactForm.module.css';
 
 const ContactForm = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !number) {
-      alert('Imię i numer telefonu są wymagane.');
+      alert('Name and phone number are required.');
       return;
     }
 
@@ -22,8 +19,7 @@ const ContactForm = ({ addContact }) => {
       number,
     };
 
-    // dispatch(createContact(newContact)); // Nie potrzebujemy tego, ponieważ używamy funkcji przekazanej jako props
-    addContact(newContact); // Wywołujemy funkcję przekazaną jako props z nowym kontaktem
+    addContact(newContact);
     setName('');
     setNumber('');
   };
@@ -32,29 +28,29 @@ const ContactForm = ({ addContact }) => {
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Imię:</label>
+          <label htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
-            placeholder="Imię"
+            placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="number">Numer telefonu:</label>
+          <label htmlFor="number">Phone number:</label>
           <input
             type="tel"
             id="number"
-            placeholder="Numer telefonu"
+            placeholder="Phone number"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
             required
           />
         </div>
         <button className={styles.button} type="submit">
-          Dodaj kontakt
+          Add contact
         </button>
       </form>
     </div>

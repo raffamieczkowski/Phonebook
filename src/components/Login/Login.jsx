@@ -11,7 +11,7 @@ const Login = ({ handleLogin }) => {
 
   return (
     <div>
-      <h2>Logowanie</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -22,12 +22,12 @@ const Login = ({ handleLogin }) => {
         />
         <input
           type="password"
-          placeholder="Hasło"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Zaloguj się</button>
+        <button type="submit">Log in</button>
       </form>
     </div>
   );

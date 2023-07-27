@@ -22,7 +22,7 @@ const Register = () => {
       .then(() => {
       })
       .catch((error) => {
-        console.error('Rejestracja nie powiodła się:', error);
+        console.error('Registration failed:', error);
       });
   };
 

@@ -16,12 +16,12 @@ const UserMenu = () => {
       {user ? (
         <div>
           <p>{user.email}</p>
-          <button onClick={handleLogout}>Wyloguj się</button>
+          <button onClick={handleLogout}>Log out</button>
         </div>
       ) : (
         <div>
-          <Link to="/login">Zaloguj się</Link>
-          <Link to="/register">Zarejestruj się</Link>
+          <Link to="/login">Log in</Link>
+          <Link to="/register">Register</Link>
         </div>
       )}
     </div>

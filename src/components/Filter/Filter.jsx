@@ -16,7 +16,7 @@ const Filter = () => {
       <input
         className={styles.searchInput}
         type="text"
-        placeholder="Szukaj..."
+        placeholder="Search..."
         value={filter}
         onChange={handleFilterChange}
       />
