@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { createContact, deleteContact } from './store/contactsSlice';
+import { createContact, deleteContact } from './redux/contactsSlice';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import styles from './App.module.css';
-import { Route, Routes, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import UserMenu from './UserMenu/UserMenu';
 import Register from './Register/Register';
 import Login from './Login/Login';
@@ -48,25 +48,23 @@ const App = () => {
         </ul>
       </nav>
       <Routes>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/login">
-          {/* Przekaz funkcję handleLogin do komponentu Login */}
-          <Login handleLogin={handleLogin} />
-        </Route>
-        <Route path="/contacts">
-          <h1 className={styles.heading}>Phonebook</h1>
-          <ContactForm addContact={handleAddContact} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+        <Route
+          path="/contacts"
+          element={
+            <>
+              <h1 className={styles.heading}>Phonebook</h1>
+              <ContactForm addContact={handleAddContact} />
 
-          <h2 className={styles.heading}>Contacts</h2>
-          <Filter />
-          <ContactList handleDeleteContact={handleDeleteContact} />
-        </Route>
-        <Route path="/">
-          <UserMenu />
-        </Route>
+              <h2 className={styles.heading}>Contacts</h2>
+              <Filter />
+              <ContactList handleDeleteContact={handleDeleteContact} />
+            </>
+          }
+        />
       </Routes>
+      <UserMenu />
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createContact } from '../store/contactsSlice';
+import { createContact } from '../redux/contactsSlice';
 import { nanoid } from 'nanoid/non-secure';
 import styles from './ContactForm.module.css';
 
-const ContactForm = () => {
+const ContactForm = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const ContactForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !number) {
-      alert('Name and number are required.');
+      alert('Imię i numer telefonu są wymagane.');
       return;
     }
 
@@ -22,7 +22,8 @@ const ContactForm = () => {
       number,
     };
 
-    dispatch(createContact(newContact));
+    // dispatch(createContact(newContact)); // Nie potrzebujemy tego, ponieważ używamy funkcji przekazanej jako props
+    addContact(newContact); // Wywołujemy funkcję przekazaną jako props z nowym kontaktem
     setName('');
     setNumber('');
   };
@@ -35,25 +36,25 @@ const ContactForm = () => {
           <input
             type="text"
             id="name"
-            placeholder="Name"
+            placeholder="Imię"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="number">Numer:</label>
+          <label htmlFor="number">Numer telefonu:</label>
           <input
             type="tel"
             id="number"
-            placeholder="Number"
+            placeholder="Numer telefonu"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
             required
           />
         </div>
         <button className={styles.button} type="submit">
-          Add contacts
+          Dodaj kontakt
         </button>
       </form>
     </div>

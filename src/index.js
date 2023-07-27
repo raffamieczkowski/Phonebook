@@ -1,20 +1,28 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { fetchContacts } from './components/contactsAPI';
-import store from './components/redux/store';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk';
+import contactsReducer from './components/redux/contactsSlice';
+import authReducer from './components/redux/authSlice';
 import App from './components/App';
 import './index.css';
 
-const token = localStorage.getItem('token');
-if (token) {
-  store.dispatch(fetchContacts(token));
-}
+const store = configureStore({
+  reducer: {
+    contacts: contactsReducer,
+    auth: authReducer,
+  },
+  middleware: [...getDefaultMiddleware(), thunk],
+});
 
 createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </React.StrictMode>
 );

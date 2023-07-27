@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './ContactList.module.css';
-import { deleteContact } from '../store/contactsSlice';
+import { deleteContact } from '../redux/contactsSlice';
+
 const ContactList = () => {
   const contacts = useSelector((state) => state.contacts.contacts);
   const filter = useSelector((state) => state.contacts.filter);
@@ -16,7 +17,7 @@ const ContactList = () => {
     try {
       await dispatch(deleteContact(contactId));
     } catch (error) {
-      console.error('The error occurred while deleting the contact:', error);
+      console.error('Wystąpił błąd podczas usuwania kontaktu:', error);
     }
   };
 
@@ -29,7 +30,7 @@ const ContactList = () => {
               {contact.name}: {contact.number}
             </span>
             <button className={styles.deleteButton} onClick={() => handleDeleteContact(contact.id)}>
-              Delete
+              Usuń
             </button>
           </li>
         ))}
