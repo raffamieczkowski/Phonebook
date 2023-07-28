@@ -1,72 +1,51 @@
-import React from 'react';
+import { useEffect, lazy } from 'react';
 import { useDispatch } from 'react-redux';
-import { createContact, deleteContact } from './redux/contactsSlice';
-import ContactForm from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
-import Filter from './Filter/Filter';
-import styles from './App.module.css';
-import { Routes, Route, Link } from 'react-router-dom';
-import UserMenu from './UserMenu/UserMenu';
-import Register from './Register/Register';
-import Login from './Login/Login';
-import { loginUser } from './redux/authSlice';
+import { Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
+import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
+import { RestrictedRoute } from '../RestrictedRoute/RestrictedRoute';
+import { useAuth } from '../hooks/useAuth';
+import { refreshUser } from './redux/auth/operations';
 
-const App = () => {
+const HomePage = lazy(() => import('./HomePage/HomePage'));
+const RegisterPage = lazy(() => import('./RegisterPage/RegisterPage'));
+const LoginPage = lazy(() => import('./LoginPage/LoginPage'));
+const TasksPage = lazy(() => import('./TasksPage/TasksPage'));
+
+export const App = () => {
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
-  const handleLogin = async (userData) => {
-    try {
-      const response = await dispatch(loginUser(userData));
-      localStorage.setItem('token', response.payload.token);
-    } catch (error) {
-      console.error('Logowanie nie powiodło się:', error);
-    }
-  };
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
 
-  const handleAddContact = (newContact) => {
-    if (!newContact.name || !newContact.number) {
-      alert('Name and number are required.');
-      return;
-    }
-    dispatch(createContact(newContact));
-  };
-
-  const handleDeleteContact = (contactId) => {
-    dispatch(deleteContact(contactId));
-  };
-
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/contacts">Contacts</Link>
-          </li>
-        </ul>
-      </nav>
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login handleLogin={handleLogin} />} />
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
         <Route
-          path="/contacts"
+          path="/register"
           element={
-            <>
-              <h1 className={styles.heading}>Phonebook</h1>
-              <ContactForm addContact={handleAddContact} />
-
-              <h2 className={styles.heading}>Contacts</h2>
-              <Filter />
-              <ContactList handleDeleteContact={handleDeleteContact} />
-            </>
+            <RestrictedRoute redirectTo="/tasks" component={<RegisterPage />} />
           }
         />
-      </Routes>
-      <UserMenu />
-    </div>
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/tasks" component={<LoginPage />} />
+          }
+        />
+        <Route
+          path="/tasks"
+          element={
+            <PrivateRoute redirectTo="/login" component={<TasksPage />} />
+          }
+        />
+      </Route>
+    </Routes>
   );
 };
-
 export default App;
