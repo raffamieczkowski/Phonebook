@@ -1,31 +1,22 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logoutUser } from '../redux/authSlice';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useAuth } from 'hooks';
+import { logOut } from 'redux/auth/operations';
 
-const UserMenu = () => {
-  const user = useSelector((state) => state.auth.user);
+export const UserMenu = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    localStorage.removeItem('token');
-  };
+  const handleLogout = () => dispatch(logOut());
 
   return (
     <div>
-      {user ? (
-        <div>
-          <p>{user.email}</p>
-          <button onClick={handleLogout}>Log out</button>
-        </div>
-      ) : (
-        <div>
-          <Link to="/login">Log in</Link>
-          <Link to="/register">Register</Link>
-        </div>
-      )}
+      <p>
+        Welcome <span>{user.name}</span>
+      </p>
+      <button type="button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };
-
-export default UserMenu;

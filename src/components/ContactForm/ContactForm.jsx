@@ -1,60 +1,81 @@
-import React, { useState } from 'react';
-import { nanoid } from 'nanoid/non-secure';
-import styles from './ContactForm.module.css';
+import Notiflix from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
+import css from './ContactForm.module.css';
 
-const ContactForm = ({ addContact }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export const ContactForm = () => {
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !number) {
-      alert('Name and phone number are required.');
-      return;
-    }
+  const stateContacts = useSelector(selectContacts);
+  const stateContactsNames = stateContacts.map(contact => contact.name);
 
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
+  const handleSubmit = event => {
+    event.preventDefault();
+    const contact = {
+      name: event.target.elements.name.value,
+      number: event.target.elements.number.value,
     };
 
-    addContact(newContact);
-    setName('');
-    setNumber('');
+    if (stateContactsNames.includes(contact.name)) {
+      event.target.reset();
+      return Notiflix.Notify.warning(`${contact.name} is alredy in contacts`, {
+        width: '500px',
+        position: 'center-top',
+        distance: '18px',
+        svgSize: '120px',
+        timeout: 3000,
+        borderRadius: '3px',
+        fontFamily: 'Dosis',
+        fontSize: '20px',
+      });
+    }
+
+    dispatch(addContact(contact));
+    Notiflix.Notify.success(`${contact.name} added`, {
+      width: '500px',
+      position: 'center-top',
+      distance: '18px',
+      svgSize: '120px',
+      timeout: 3000,
+      borderRadius: '3px',
+      fontFamily: 'Dosis',
+      fontSize: '20px',
+    });
+    event.target.reset();
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+    <div className={css.wrapper}>
+      <form onSubmit={handleSubmit} className={css.form}>
+        <label className={css.form__name}>
           <input
             type="text"
-            id="name"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
+            pattern="^[A-Za-z.'\- ]+$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
+            className={css.form__input}
+            placeholder="Contact name"
           />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="number">Phone number:</label>
+        </label>
+
+        <label className={css.form__number}>
           <input
             type="tel"
-            id="number"
-            placeholder="Phone number"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
+            name="number"
+            pattern="^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}\s?\d{1,4}\s?\d{1,9}$"
+            title="number number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
+            placeholder="Contact number"
+            className={css.form__input}
           />
-        </div>
-        <button className={styles.button} type="submit">
+        </label>
+
+        <button type="submit" className={css.form__button}>
           Add contact
         </button>
       </form>
     </div>
   );
 };
-
-export default ContactForm;

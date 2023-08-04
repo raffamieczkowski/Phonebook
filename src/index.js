@@ -1,28 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
-import contactsReducer from './components/redux/contactsSlice';
-import authReducer from './components/redux/authSlice';
-import App from './components/App';
+import ReactDOM from 'react-dom/client';
+import { App } from 'components/App';
 import './index.css';
+import { Provider } from 'react-redux';
+import { persistor, store } from 'redux/store';
+import { BrowserRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const store = configureStore({
-  reducer: {
-    contacts: contactsReducer,
-    auth: authReducer,
-  },
-  middleware: [...getDefaultMiddleware(), thunk],
-});
-
-createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter basename="/goit-react-hw-08-phonebook">
+          <App />
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

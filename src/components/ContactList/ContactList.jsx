@@ -1,42 +1,103 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Notiflix from 'notiflix';
 import { useSelector, useDispatch } from 'react-redux';
-import styles from './ContactList.module.css';
-import { deleteContact } from '../redux/contactsSlice';
+import { deleteContact, editContact } from 'redux/contacts/operations';
+import { selectVisibleContacts } from 'redux/contacts/selectors';
 
-const ContactList = () => {
-  const contacts = useSelector((state) => state.contacts.contacts);
-  const filter = useSelector((state) => state.contacts.filter);
-
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+export const ContactList = () => {
+  const contacts = useSelector(selectVisibleContacts);
+  const [editingContactId, setEditingContactId] = useState(null);
+  const [editedName, setEditedName] = useState('');
+  const [editedNumber, setEditedNumber] = useState('');
 
   const dispatch = useDispatch();
 
-  const handleDeleteContact = async (contactId) => {
-    try {
-      await dispatch(deleteContact(contactId));
-    } catch (error) {
-      console.error('An error occurred while deleting the contact!', error);
-    }
+  const handleEdit = (id, name, number) => {
+    setEditingContactId(id);
+    setEditedName(name);
+    setEditedNumber(number);
+  };
+
+  const handleSave = id => {
+    const editedContact = {
+      id: id,
+      name: editedName,
+      number: editedNumber,
+    };
+
+    dispatch(editContact(editedContact));
+
+    Notiflix.Notify.info(`${editedName} edited`, {
+      width: '500px',
+      position: 'center-top',
+      distance: '18px',
+      svgSize: '120px',
+      timeout: 3000,
+      borderRadius: '3px',
+      fontFamily: 'Dosis',
+      fontSize: '20px',
+    });
+
+    setEditingContactId(null);
+    setEditedName('');
+    setEditedNumber('');
+  };
+
+  const handleDelete = id => {
+    dispatch(deleteContact(id));
+    Notiflix.Notify.failure(`Contact DELETED`, {
+      width: '500px',
+      position: 'center-top',
+      distance: '18px',
+      svgSize: '120px',
+      timeout: 3000,
+      borderRadius: '3px',
+      fontFamily: 'Dosis',
+      fontSize: '20px',
+    });
   };
 
   return (
-    <div className={styles.listContainer}>
-      <ul>
-        {filteredContacts.map((contact) => (
-          <li key={contact.id} className={styles.contactItem}>
-            <span className={styles.contactName}>
-              {contact.name}: {contact.number}
-            </span>
-            <button className={styles.deleteButton} onClick={() => handleDeleteContact(contact.id)}>
-              Usuń
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {contacts.map(contact => (
+        <li key={contact.id}>
+          {editingContactId === contact.id ? (
+            <>
+              <input
+                type="text"
+                value={editedName}
+                onChange={e => setEditedName(e.target.value)}
+              />
+              <input
+                type="text"
+                value={editedNumber}
+                onChange={e => setEditedNumber(e.target.value)}
+              />
+              <button type="button" onClick={() => handleSave(contact.id)}>
+                Save
+              </button>
+            </>
+          ) : (
+            <>
+              <p>{contact.name}</p>
+              <p>{contact.number}</p>
+              <div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleEdit(contact.id, contact.name, contact.number)
+                  }
+                >
+                  Edit
+                </button>
+                <button type="button" onClick={() => handleDelete(contact.id)}>
+                  Delete
+                </button>
+              </div>
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 };
-
-export default ContactList;

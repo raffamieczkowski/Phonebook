@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/operations';
+import { register } from 'redux/auth/operations';
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = event => {
@@ -10,7 +10,8 @@ export const LoginForm = () => {
     const form = event.currentTarget;
 
     dispatch(
-      logIn({
+      register({
+        name: form.elements.name.value,
         email: form.elements.email.value,
         password: form.elements.password.value,
       })
@@ -21,6 +22,14 @@ export const LoginForm = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <label>
+          Username
+          <input
+            type="text"
+            name="name"
+            placeholder="John Brown"
+          />
+        </label>
         <label>
           Email
           <input
@@ -38,7 +47,7 @@ export const LoginForm = () => {
           />
         </label>
         <button type="submit">
-          Log in
+          Register
         </button>
       </form>
     </div>
