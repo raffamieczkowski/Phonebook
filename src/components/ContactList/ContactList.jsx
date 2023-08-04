@@ -3,6 +3,46 @@ import Notiflix from 'notiflix';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact, editContact } from 'redux/contacts/operations';
 import { selectVisibleContacts } from 'redux/contacts/selectors';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
+const contactListStyles = {
+  list: {
+    listStyle: 'none',
+    padding: '0',
+  },
+  listItem: {
+    marginBottom: '20px',
+  },
+  contactInfo: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '10px',
+  },
+  contactName: {
+    fontWeight: 'bold',
+    fontSize: '20px',
+    marginRight: '10px',
+  },
+  contactNumber: {
+    fontSize: '16px',
+    color: '#555',
+    marginRight: '10px',
+  },
+  editForm: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '10px',
+  },
+  editInput: {
+    marginRight: '10px',
+  },
+  editButton: {
+    marginLeft: '10px',
+  },
+};
 
 export const ContactList = () => {
   const contacts = useSelector(selectVisibleContacts);
@@ -58,43 +98,61 @@ export const ContactList = () => {
   };
 
   return (
-    <ul>
+    <ul style={contactListStyles.list}>
       {contacts.map(contact => (
-        <li key={contact.id}>
+        <li key={contact.id} style={contactListStyles.listItem}>
           {editingContactId === contact.id ? (
-            <>
-              <input
+            <form style={contactListStyles.editForm}>
+              <TextField
                 type="text"
                 value={editedName}
                 onChange={e => setEditedName(e.target.value)}
+                style={contactListStyles.editInput}
               />
-              <input
+              <TextField
                 type="text"
                 value={editedNumber}
                 onChange={e => setEditedNumber(e.target.value)}
+                style={contactListStyles.editInput}
               />
-              <button type="button" onClick={() => handleSave(contact.id)}>
-                Save
-              </button>
-            </>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleSave(contact.id)}
+                >
+                  Save
+                </Button>
+              </Stack>
+            </form>
           ) : (
-            <>
-              <p>{contact.name}</p>
-              <p>{contact.number}</p>
-              <div>
-                <button
-                  type="button"
+            <div style={contactListStyles.contactInfo}>
+              <Typography style={contactListStyles.contactName}>
+                {contact.name}
+              </Typography>
+              <Typography style={contactListStyles.contactNumber}>
+                {contact.number}
+              </Typography>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="outlined"
+                  color="primary"
                   onClick={() =>
                     handleEdit(contact.id, contact.name, contact.number)
                   }
                 >
                   Edit
-                </button>
-                <button type="button" onClick={() => handleDelete(contact.id)}>
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => handleDelete(contact.id)}
+                  style={contactListStyles.editButton}
+                >
                   Delete
-                </button>
-              </div>
-            </>
+                </Button>
+              </Stack>
+            </div>
           )}
         </li>
       ))}

@@ -23,14 +23,14 @@ export const AuthNav = () => {
         style={linkStyles}
         activeStyle={activeLinkStyles}
       >
-        Rejestracja
+        Register
       </NavLink>
       <NavLink
         to="/login"
         style={linkStyles}
         activeStyle={activeLinkStyles}
       >
-        Zaloguj się
+        Login
       </NavLink>
     </Stack>
   );

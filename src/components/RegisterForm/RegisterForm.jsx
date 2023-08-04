@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/auth/operations';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -20,35 +23,18 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: '30px', display: 'flex', justifyContent: 'center' }}>
       <form onSubmit={handleSubmit}>
-        <label>
-          Username
-          <input
-            type="text"
-            name="name"
-            placeholder="John Brown"
-          />
-        </label>
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="example@example.com"
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-          />
-        </label>
-        <button type="submit">
-          Register
-        </button>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Stack spacing={2} sx={{ width: '300px' }}>
+            <TextField fullWidth label="Username" type="text" name="name" placeholder="John Brown" />
+            <TextField fullWidth label="Email" type="email" name="email" placeholder="example@example.com" />
+            <TextField fullWidth label="Password" type="password" name="password" placeholder="password" />
+            <Button type="submit" variant="contained" color="primary" sx={{ width: '100%' }}>
+              Register
+            </Button>
+          </Stack>
+        </div>
       </form>
     </div>
   );
