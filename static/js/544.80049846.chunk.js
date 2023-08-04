@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkgoit_react_hw_08_phonebook=self.webpackChunkgoit_react_hw_08_phonebook||[]).push([[544],{9544:function(e,n,t){t.r(n);t(2791);var o=t(890),a=t(184);n.default=function(){return(0,a.jsxs)("div",{style:{textAlign:"center"},children:[(0,a.jsx)(o.Z,{variant:"h4",component:"h1",sx:{mb:2},children:"Welcome to the Phonebook App!"}),(0,a.jsx)(o.Z,{variant:"body1",sx:{mb:2},children:"Here you can store your contacts and easily manage them."})]})}}}]);
-//# sourceMappingURL=544.80049846.chunk.js.map
