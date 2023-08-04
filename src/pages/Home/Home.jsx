@@ -8,7 +8,7 @@ const Home = () => {
       <Helmet>
         <title>Home</title>
       </Helmet>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', color: '#ffcc33', background: '#000033', borderTop: '1px solid #ffcc33' }}>
         <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
           Welcome to the Phonebook App!
         </Typography>

@@ -22,15 +22,17 @@ export const LoginForm = () => {
   };
 
   return (
-    <div style={{ paddingTop: '30px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ paddingTop: '30px', display: 'flex', justifyContent: 'center', backgroundColor: '#000033', color: '#ffcc33' }}>
       <form onSubmit={handleSubmit}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Stack spacing={2} sx={{ width: '300px' }}>
-            <TextField fullWidth label="Email" type="email" name="email" placeholder="example@example.com" />
-            <TextField fullWidth label="Password" type="password" name="password" placeholder="password" />
-            <Button type="submit" variant="contained" color="primary" sx={{ width: '100%' }}>
-              Log in
-            </Button>
+            <TextField fullWidth label="Email" type="email" name="email" placeholder="example@example.com" style={{ backgroundColor: '#fff', borderRadius: '0' }} />
+            <TextField fullWidth label="Password" type="password" name="password" placeholder="password" style={{ backgroundColor: '#fff', borderRadius: '0' }} />
+            <div style={{ marginBottom: '10px' }}>
+              <Button type="submit" variant="contained" color="primary" sx={{ width: '100%', backgroundColor: '#ffcc33', color: '#000033', borderRadius: '0' }}>
+                Log in
+              </Button>
+            </div>
           </Stack>
         </div>
       </form>

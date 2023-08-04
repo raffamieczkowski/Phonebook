@@ -12,10 +12,10 @@ export const AppBarComponent = () => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: '#000033' }}>
       <Container maxWidth="lg">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#ffcc33' }}>
             Phonebook
           </Typography>
           <Navigation />

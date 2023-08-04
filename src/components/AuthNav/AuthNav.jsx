@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 
 const linkStyles = {
   textDecoration: 'none',
-  color: 'black',
+  color: '#ffcc33',
   fontWeight: 'bold',
   fontSize: '16px',
   padding: '8px',

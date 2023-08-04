@@ -25,10 +25,10 @@ const contactListStyles = {
     fontWeight: 'bold',
     fontSize: '20px',
     marginRight: '10px',
+    color: '#ffcc33',
   },
   contactNumber: {
     fontSize: '16px',
-    color: '#555',
     marginRight: '10px',
   },
   editForm: {
