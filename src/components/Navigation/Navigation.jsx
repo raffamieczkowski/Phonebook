@@ -12,7 +12,7 @@ const linkStyles = {
 };
 
 const activeLinkStyles = {
-  color: 'purple',
+  color: 'green',
 };
 
 const homeLinkStyles = {
