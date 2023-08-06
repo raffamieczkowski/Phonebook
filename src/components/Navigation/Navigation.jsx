@@ -25,7 +25,7 @@ export const Navigation = () => {
 
   return (
     <nav>
-      <NavLink exact to="/" style={homeLinkStyles} activeStyle={activeLinkStyles}>
+      <NavLink to="/" style={homeLinkStyles} activeStyle={activeLinkStyles}>
         Home
       </NavLink>
       {isLoggedIn && (
